@@ -1,20 +1,15 @@
 const Course = ({ course }) => {
-  console.log("course");
   return (
     <div>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   );
 }
 
 const Header = ({ name }) => {
-  console.log("header");
-  return (
-    <div>
-      <h1>{name}</h1>
-    </div>
-  );
+  return <h1>{name}</h1>
 }
 
 const Content = ({ parts }) => {
@@ -23,25 +18,19 @@ const Content = ({ parts }) => {
       <Part part={parts[0].name} exercises={parts[0].exercises} />
       <Part part={parts[1].name} exercises={parts[1].exercises} />
       <Part part={parts[2].name} exercises={parts[2].exercises} />
+      <Part part={parts[3].name} exercises={parts[3].exercises} />
     </div>
   );
 }
 
 const Part = ({ part, exercises }) => {
-  return (
-    <p>
-      {part} {exercises}
-    </p>
-  );
+  return <p>{part} {exercises}</p>
 }
 
-// const Total = ({ parts }) => {
-//   return (
-//     <div>
-//       <p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
-//     </div>
-//   );
-// }
+const Total = ({ parts }) => {
+  let summation = parts.reduce((accumulator, currentPart) => accumulator + currentPart.exercises, 0);
+  return <b>total of {summation} exercises</b>
+}
 
 const App = () => {
   const course = {
@@ -62,6 +51,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4
       }
     ]
   }
