@@ -2,7 +2,9 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { id: 'Arto Hellas',
+      name: 'Arto Hellas' 
+    }
   ])
   const [newName, setNewName] = useState('')
 
@@ -18,7 +20,8 @@ const App = () => {
       name: newName
     }
 
-    setPersons(persons.concat(newPerson))
+    if (persons.some(person => JSON.stringify(person) === JSON.stringify(newPerson))) alert(`${newPerson.name} is already added to phonebook`)
+    else setPersons(persons.concat(newPerson))
     setNewName('')
   }
 
@@ -35,7 +38,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(person => <div>{person.name}</div>)}
+        {persons.map(person => <div key={person.id}>{person.name}</div>)}
       </div>
     </div>
   )
