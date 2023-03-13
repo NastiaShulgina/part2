@@ -2,13 +2,11 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { id: 'Arto Hellas',
-      name: 'Arto Hellas',
-      number: '+380937003004'
-    }
+    { id: 1, name: 'Arto Hellas', number: '040-123456' },
+    { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
+    { id: 3, name: 'Dan Abramov', number: '12-43-234345' },
+    { id: 4, name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
-  // const [newName, setNewName] = useState('')
-  // const [newNumber, setNewNumber] = useState('')
 
   const [newNote, setNewNote] = useState(
     {
@@ -16,6 +14,10 @@ const App = () => {
       newNumber: ''
     }
   )
+
+  const [filteredPersons, setFilteredPersons] = useState([persons])
+
+  const [filter, setFilter] = useState('')
 
   const handleNameChange = (event) => {
     setNewNote({
@@ -31,6 +33,16 @@ const App = () => {
     })
   }
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+
+    const PATTERN = event.target.value.toLowerCase()
+
+    const filtered = persons.filter((person) => person.name.toLowerCase().includes(PATTERN) )
+
+    setFilteredPersons(filtered)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -41,7 +53,10 @@ const App = () => {
     }
 
     if (persons.some(person => JSON.stringify(person) === JSON.stringify(newPerson))) alert(`${newPerson.name} is already added to phonebook`)
-    else setPersons(persons.concat(newPerson))
+    else {
+      setPersons(persons.concat(newPerson))
+      setFilter('')
+    }
     setNewNote({
       newName: '',
       newNumber: ''
@@ -51,6 +66,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with: <input value={filter} onChange={handleFilterChange} />
+      </div>
+      <h2>add a new</h2>
       <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newNote.newName} onChange={handleNameChange} />
@@ -64,7 +83,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <div>
-        {persons.map(person => <div key={person.id}>{person.name} {person.number}</div>)}
+        {(filter === '' ? persons : filteredPersons).map(person => <div key={person.id}>{person.name} {person.number}</div>)}
       </div>
     </div>
   )
