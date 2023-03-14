@@ -45,7 +45,7 @@ const App = () => {
 
     const PATTERN = event.target.value.toLowerCase()
 
-    const filtered = persons.filter((person) => person.name.toLowerCase().includes(PATTERN) )
+    const filtered = persons.filter((person) => person.name.toLowerCase().includes(PATTERN))
 
     setFilteredPersons(filtered)
   }
@@ -54,14 +54,18 @@ const App = () => {
     event.preventDefault()
 
     const newPerson = {
-      id: newNote.newName,
       name: newNote.newName,
       number: newNote.newNumber
     }
 
     if (persons.some(person => JSON.stringify(person) === JSON.stringify(newPerson))) alert(`${newPerson.name} is already added to phonebook`)
     else {
-      setPersons(persons.concat(newPerson))
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+        })
+
       setFilter('')
     }
     setNewNote({
