@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import NewPersonForm from './components/NewPersonForm'
 import PhonesList from './components/PhonesList'
 import SearchFilter from './components/SearchFilter'
@@ -59,19 +58,21 @@ const App = () => {
       number: newNote.newNumber
     }
 
-    if (persons.some(person => JSON.stringify(person) === JSON.stringify(newPerson))) alert(`${newPerson.name} is already added to phonebook`)
-    else {
-      personService
-      .create(newPerson)
-      .then(responseData => {
-        setPersons(persons.concat(responseData))
-        setNewNote('')
-      })
+    persons.forEach(person => {
+      console.log(JSON.stringify(person),);
+    })
 
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+    console.log(JSON.stringify(newPerson),);
+
+    if (persons.some(person => JSON.stringify(person.name) === JSON.stringify(newPerson.name)
+      && JSON.stringify(person.number) === JSON.stringify(newPerson.number))) {
+      alert(`${newPerson.name} is already added to phonebook`)
+    } else {
+      personService
+        .create(newPerson)
+        .then(responseData => {
+          setPersons(persons.concat(responseData))
+          setNewNote('')
         })
 
       setFilter('')
@@ -86,7 +87,7 @@ const App = () => {
     <div>
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <NewPersonForm newNote={newNote} handleSubmit={handleSubmit} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
-      <PhonesList filter={filter} persons={persons} filteredPersons={filteredPersons} />
+      <PhonesList filter={filter} persons={persons} setPersons={setPersons} filteredPersons={filteredPersons} />
     </div>
   )
 }
