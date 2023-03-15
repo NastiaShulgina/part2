@@ -12,14 +12,19 @@ const create = newObject => {
     return request.then(response => response.data)
 }
 
+const changeNumber = (id, newObject) => {
+    const request = axios.put(`${baseUrl}/${id}`, newObject)
+    return request.then(response => response.data)
+}
+
 const deleteById = (person, persons, setPersons) => {
-    if (window.confirm(`Delete ${person.name} ?`)) {
+    if (window.confirm(`Delete ${person.name}?`)) {
         axios.delete(`${baseUrl}/${person.id}`)
         setPersons(persons.filter(element => element.id !== person.id))
     }
 
 }
 
-const personService = { getAll, create, deleteById }
+const personService = { getAll, create, changeNumber, deleteById }
 
 export default personService

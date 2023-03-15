@@ -50,6 +50,14 @@ const App = () => {
     setFilteredPersons(filtered)
   }
 
+  const handleNumberUpdate = (id, newObject) => {
+    personService
+      .changeNumber(id, newObject)
+      .then(updatedPerson => {
+        setPersons(persons.map(person => (person.id !== updatedPerson.id && person) || updatedPerson))
+      })
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -58,15 +66,13 @@ const App = () => {
       number: newNote.newNumber
     }
 
-    persons.forEach(person => {
-      console.log(JSON.stringify(person),);
-    })
-
-    console.log(JSON.stringify(newPerson),);
-
     if (persons.some(person => JSON.stringify(person.name) === JSON.stringify(newPerson.name)
       && JSON.stringify(person.number) === JSON.stringify(newPerson.number))) {
       alert(`${newPerson.name} is already added to phonebook`)
+    } else if (persons.some(person => JSON.stringify(person.name) === JSON.stringify(newPerson.name))) {
+      const samePerson = persons.find(person => JSON.stringify(person.name) === JSON.stringify(newPerson.name) ? person : null)
+      window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)
+        && handleNumberUpdate(samePerson.id, newPerson)
     } else {
       personService
         .create(newPerson)
@@ -74,7 +80,6 @@ const App = () => {
           setPersons(persons.concat(responseData))
           setNewNote('')
         })
-
       setFilter('')
     }
     setNewNote({
