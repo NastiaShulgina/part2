@@ -1,10 +1,19 @@
-.success {
-  color: darkgreen;
-  border-color: limegreen;
-  background-image: url('https://cdn.pixabay.com/photo/2016/02/11/14/59/background-1193727__480.png');
+.message {
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+.success {
+  color: darkgreen;
+  border-color: limegreen;
+  background-image: url('https://cdn.pixabay.com/photo/2016/02/11/14/59/background-1193727__480.png');
+}
+
+.failure {
+  color: black;
+  border-color: red;
+  background-image: url('https://img.freepik.com/premium-vector/vector-cute-mini-tomato-illustration-motif-seamless-repeat-pattern-fashion-fabric-home-decor-print_461955-461.jpg');
 }

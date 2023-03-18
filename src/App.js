@@ -3,7 +3,8 @@ import NewPersonForm from './components/NewPersonForm'
 import PhonesList from './components/PhonesList'
 import SearchFilter from './components/SearchFilter'
 import personService from './services/persons'
-import SuccessMessage from './components/successMessage'
+import SuccessMessage from './components/SuccessMessage'
+import FailureMessage from './components/FailureMessage'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -16,10 +17,10 @@ const App = () => {
   )
 
   const [filteredPersons, setFilteredPersons] = useState([persons])
-
   const [filter, setFilter] = useState('')
 
-  const [message, setMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [failureMessage, setFailureMessage] = useState('')
 
   useEffect(() => {
     personService
@@ -58,11 +59,14 @@ const App = () => {
       .changeNumber(id, newObject)
       .then(updatedPerson => {
         setPersons(persons.map(person => (person.id !== updatedPerson.id && person) || updatedPerson))
-        setMessage(`Updated ${updatedPerson.name}'s number!`)
-        
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
+        setSuccessMessage(`Updated ${updatedPerson.name}'s number!`)
+        setTimeout(() => setSuccessMessage(null), 5000)
+      })
+      .catch(err => {
+        if (err.response.status === 404) {
+          setFailureMessage(`Information of ${newObject.name} has already been removed from the server!`)
+          setTimeout(() => setFailureMessage(null), 5000)
+        }
       })
   }
 
@@ -87,11 +91,8 @@ const App = () => {
         .then(responseData => {
           setPersons(persons.concat(responseData))
           setNewNote('')
-          setMessage(`Added ${newPerson.name}!`)
-
-          setTimeout(() => {
-            setMessage(null)
-          }, 5000)
+          setSuccessMessage(`Added ${newPerson.name}!`)
+          setTimeout(() => setSuccessMessage(null), 5000)
         })
       setFilter('')
     }
@@ -103,7 +104,8 @@ const App = () => {
 
   return (
     <div>
-      {message && <SuccessMessage message={message} />}
+      {failureMessage && <FailureMessage message={failureMessage} />}
+      {successMessage && <SuccessMessage message={successMessage} />}
       <SearchFilter filter={filter} handleFilterChange={handleFilterChange} />
       <NewPersonForm newNote={newNote} handleSubmit={handleSubmit} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <PhonesList filter={filter} persons={persons} setPersons={setPersons} filteredPersons={filteredPersons} />

@@ -1,9 +1,9 @@
-const successMessage = (messageObj) => {
+const SuccessMessage = (messageObj) => {
     return (
-        <div className='success'>
+        <div className='message success'>
             {messageObj.message}
         </div>
     )
 }
 
-export default successMessage;
+export default SuccessMessage;
