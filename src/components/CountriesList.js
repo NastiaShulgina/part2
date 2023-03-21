@@ -1,7 +1,17 @@
+import ToggleCountry from "./ToggleCountry";
+
 const CountriesList = ({ countries }) => {
     return (
         <ul>
-            {countries.map(country => <li key={country.name.common}>{country.name.common}</li> )}
+            {countries.map(country => {
+                const name = country.name.common
+                return (
+                    <div key={name}>
+                        <li>{name}</li>
+                        <ToggleCountry country={country} />
+                    </div>
+                )
+            })}
         </ul>
     );
 }
