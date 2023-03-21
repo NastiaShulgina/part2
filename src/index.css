@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-img {
+.flag {
   border: 2px solid lightgrey;
   margin: 30px 0;
 }
