@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3003/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -22,7 +22,6 @@ const deleteById = (person, persons, setPersons) => {
         axios.delete(`${baseUrl}/${person.id}`)
         setPersons(persons.filter(element => element.id !== person.id))
     }
-
 }
 
 const personService = { getAll, create, changeNumber, deleteById }
